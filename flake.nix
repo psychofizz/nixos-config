@@ -2,14 +2,13 @@
   description = "Home Manager configuration for saikofisu";
 
   inputs = {
-    # Specify the source of Home Manager and Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # The Antigravity Input
+    # Google's new vibeDE
     antigravity-nix = {
       url = "github:jacopone/antigravity-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,7 +18,10 @@
   outputs = { nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in {
       homeConfigurations."saikofisu" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
