@@ -61,6 +61,15 @@
     youtube-tui
   ];
 
+  xdg.desktopEntries.antigravity = {
+    name = "Google Antigravity";
+    genericName = "Agentic IDE";
+    comment = "AI-powered development platform";
+    exec = "antigravity %F";
+    terminal = false;
+    categories = [ "Development" "IDE" "TextEditor" ];
+    icon = "applications-development";
+  };
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
