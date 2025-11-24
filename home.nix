@@ -27,6 +27,7 @@
     obs-studio
     inkscape
     inputs.antigravity-nix.packages.${pkgs.system}.default
+    inputs.wfetch.packages.${pkgs.system}.default
     libreoffice
 
     # --- Video & Audio Players ---
@@ -43,6 +44,8 @@
     yt-dlp
     kdePackages.ktorrent
     moonlight-qt
+    kitty
+    kitty-img
 
 
 
