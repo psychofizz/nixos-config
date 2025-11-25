@@ -1,5 +1,5 @@
 {
-  description = "Home Manager configuration for saikofisu";
+  description = "NixOS and Home Manager configuration for saikofisu";
 
   nixConfig = {
     extra-substituters = [ "https://wfetch.cachix.org" ];
@@ -8,6 +8,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,29 +20,42 @@
     };
 
     wfetch.url = "github:iynaix/wfetch";
-
-    # --- ADDED: Alacritty Theme Input ---
     alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
   };
 
-  outputs = { nixpkgs, home-manager, alacritty-theme, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, alacritty-theme, ... }@inputs:
     let
       system = "x86_64-linux";
-
-      # --- MODIFIED: Import pkgs with the Overlay ---
-      pkgs = import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        # This makes pkgs.alacritty-theme available in home.nix
-        overlays = [ alacritty-theme.overlays.default ];
-      };
+      # Define overlays here so we can pass them to the system
+      overlays = [ alacritty-theme.overlays.default ];
     in {
-      homeConfigurations."saikofisu" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+    
+      ### THE PART YOU WERE MISSING:
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        inherit system;
+        
+        specialArgs = { inherit inputs; }; 
 
-        extraSpecialArgs = { inherit inputs; };
+        modules = [
+          # Import your main system config
+          ./configuration.nix
 
-        modules = [ ./home.nix ];
+          # Apply overlays to the whole system
+          { nixpkgs.overlays = overlays; }
+
+          # Import Home Manager as a NixOS module
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            
+            # Pass inputs to home.nix specifically
+            home-manager.extraSpecialArgs = { inherit inputs; };
+
+            # Tell Home Manager to look at home.nix
+            home-manager.users.saikofisu = import ./home.nix;
+          }
+        ];
       };
     };
 }
