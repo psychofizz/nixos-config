@@ -1,5 +1,5 @@
 {
-  description = "NixOS and Home Manager configuration for saikofisu";
+  description = "Unified Flake for saikofisu (System + Home)";
 
   nixConfig = {
     extra-substituters = [ "https://wfetch.cachix.org" ];
@@ -14,45 +14,47 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Custom inputs used in your home.nix
     antigravity-nix = {
       url = "github:jacopone/antigravity-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     wfetch.url = "github:iynaix/wfetch";
+    
+    # Kept this from your previous request, though you seem to be using Kitty now
     alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
   };
 
   outputs = { self, nixpkgs, home-manager, alacritty-theme, ... }@inputs:
     let
       system = "x86_64-linux";
-      # Define overlays here so we can pass them to the system
       overlays = [ alacritty-theme.overlays.default ];
     in {
-    
-      ### THE PART YOU WERE MISSING:
+      ### This is the entry point for 'nixos-rebuild switch'
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
         
+        # Pass inputs to configuration.nix (if needed)
         specialArgs = { inherit inputs; }; 
 
         modules = [
-          # Import your main system config
+          # 1. Your System Configuration (moved from /etc)
           ./configuration.nix
 
-          # Apply overlays to the whole system
+          # 2. Overlays
           { nixpkgs.overlays = overlays; }
 
-          # Import Home Manager as a NixOS module
+          # 3. Home Manager Module (Connects home.nix to the system)
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             
-            # Pass inputs to home.nix specifically
+            # This passes 'inputs' to home.nix so you can use antigravity/wfetch
             home-manager.extraSpecialArgs = { inherit inputs; };
 
-            # Tell Home Manager to look at home.nix
+            # This tells Home Manager to read your file
             home-manager.users.saikofisu = import ./home.nix;
           }
         ];
