@@ -15,6 +15,7 @@
     audacity
     krita
     kdePackages.kdenlive
+    kdePackages.plasma-browser-integration
     handbrake
     obs-studio
     inkscape
@@ -36,6 +37,7 @@
     yt-dlp
     kdePackages.ktorrent
     moonlight-qt
+    ungoogled-chromium
 
     # --- Productivity & Other ---
     anki
