@@ -21,6 +21,7 @@
     inputs.antigravity-nix.packages.${pkgs.system}.default
     inputs.wfetch.packages.${pkgs.system}.default
     libreoffice
+    anki
 
     # --- Video & Audio Players ---
     mpv
@@ -102,6 +103,14 @@
           ];
         in
           (builtins.concatStringsSep "," mappings) + " Symbols Nerd Font";
+      };
+    };
+
+    starship = {
+      enable = true;
+      settings = {
+        add_newline = true;
+        # ... other settings
       };
     };
   };
