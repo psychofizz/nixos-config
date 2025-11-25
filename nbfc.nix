@@ -1,0 +1,23 @@
+{pkgs, ...}: let
+  filename = "nbfc/nbfc.json";
+
+  nitroConfig = ''
+    {"SelectedConfigId": "Dell Inspiron 7375"}
+  '';
+in {
+  environment.systemPackages = with pkgs; [
+    nbfc-linux
+  ];
+  systemd.services.nbfc_service = {
+    enable = true;
+    description = "NoteBook FanControl service";
+    serviceConfig.Type = "simple";
+    path = [pkgs.kmod];
+
+    script = "${pkgs.nbfc-linux}/bin/nbfc_service --config-file '/etc/${filename}'";
+
+    wantedBy = ["multi-user.target"];
+  };
+
+  environment.etc."${filename}".text = nitroConfig;
+}

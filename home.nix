@@ -1,23 +1,15 @@
 { config, pkgs, inputs, ... }:
 
 {
-  # Home Manager needs a bit of information about you and the paths it should
-  # manage.
   home.username = "saikofisu";
   home.homeDirectory = "/home/saikofisu";
+  home.stateVersion = "25.05";
 
-  # This value determines the Home Manager release that your configuration is
-  # compatible with. This helps avoid breakage when a new Home Manager release
-  # introduces backwards incompatible changes.
-  #
-  # You should not change this value, even if you update Home Manager. If you do
-  # want to update the value, then make sure to first check the Home Manager
-  # release notes.
-  home.stateVersion = "25.05"; # Please read the comment before changing.
-
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
- home.packages = with pkgs; [
+  home.packages = with pkgs; [
+    # --- Fonts (Required for the terminal ricing) ---
+    fira-code
+    nerd-fonts.symbols-only
+    nerd-fonts.fira-code
 
     # --- Multimedia & Graphics ---
     audacity
@@ -40,14 +32,9 @@
 
     # --- Development & Utilities ---
     vscode-fhs
-    alacritty
     yt-dlp
     kdePackages.ktorrent
     moonlight-qt
-    kitty
-    kitty-img
-
-
 
     # --- Productivity & Other ---
     anki
@@ -64,153 +51,58 @@
     youtube-tui
   ];
 
-  xdg.desktopEntries.antigravity = {
-    name = "Google Antigravity";
-    genericName = "Agentic IDE";
-    comment = "AI-powered development platform";
-    exec = "antigravity %F";
-    terminal = false;
-    categories = [ "Development" "IDE" "TextEditor" ];
-    icon = "applications-development";
-  };
+  # ... (Keep your xdg.desktopEntries here if you have them) ...
 
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-    # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-    # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-    # # symlink to the Nix store copy.
-    # ".screenrc".source = dotfiles/screenrc;
-
-    # # You can also set the file content immediately.
-    # ".gradle/gradle.properties".text = ''
-    #   org.gradle.console=verbose
-    #   org.gradle.daemon.idletimeout=3600000
-    # '';
-
-  };
-
-  # Home Manager can also manage your environment variables through
-  # 'home.sessionVariables'. These will be explicitly sourced when using a
-  # shell provided by Home Manager. If you don't want to manage your shell
-  # through Home Manager then you have to manually source 'hm-session-vars.sh'
-  # located at either
-  #
-  #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-  #
-  # or
-  #
-  #  /etc/profiles/per-user/saikofisu/etc/profile.d/hm-session-vars.sh
-  #
-  home.sessionVariables = {
-    # EDITOR = "emacs";
-  };
-
-    programs = {
-
-    # --- Git Configuration ---
+  programs = {
+    # --- Git ---
     git = {
       enable = true;
-      userName = "saikofisu";
-      userEmail = "psychofizz@pm.me";
-    };
-
-    # --- Vim Configuration ---
-    vim = {
-      enable = true;
-      extraConfig = ''
-        syntax on                 " Enable syntax highlighting
-        filetype plugin indent on " Enable filetype-based indentation
-        set number                " Show line numbers
-        set relativenumber        " Show relative line numbers
-        set mouse=a               " Enable mouse support
-      '';
-    };
-
-    # --- Alacritty (Terminal) Configuration ---
-    alacritty = {
-      enable = true;
+      # The trace requested moving these into 'settings'
       settings = {
-        font = {
-          
-          size = 10;
+        user = {
+          name = "saikofisu";
+          email = "psychofizz@pm.me";
         };
-
-        # Catppuccin Mocha Theme
-        colors = {
-          primary = {
-            background = "0x1e1e2e";
-            foreground = "0xcdd6f4";
-          };
-          cursor = {
-            text = "0x1e1e2e";
-            cursor = "0xf5e0dc";
-          };
-          normal = {
-            black = "0x45475a";
-            red = "0xf38ba8";
-            green = "0xa6e3a1";
-            yellow = "0xf9e2af";
-            blue = "0x89b4fa";
-            magenta = "0xf5c2e7";
-            cyan = "0x94e2d5";
-            white = "0xbac2de";
-          };
-          bright = {
-            black = "0x585b70";
-            red = "0xf38ba8";
-            green = "0xa6e3a1";
-            yellow = "0xf9e2af";
-            blue = "0x89b4fa";
-            magenta = "0xf5c2e7";
-            cyan = "0x94e2d5";
-            white = "0xa6adc8";
-          };
+        alias = {
+          ci = "commit";
+          co = "checkout";
+          s = "status";
         };
       };
     };
 
-    # --- Starship (Prompt) Configuration ---
-    starship = {
+    # --- Kitty (Riced) ---
+    kitty = {
       enable = true;
-      # This enables the starship prompt tool.
-      # You must ALSO enable it for your specific shell.
-      # See the examples below.
-    };
+      themeFile = "Catppuccin-Mocha";
+      font = {
+        name = "Fira Code";
+        size = 10;
+      };
 
-    # --- Shell Configuration (Choose one) ---
+      settings = {
+        confirm_os_window_close = 0;
+        dynamic_background_opacity = true;
+        enable_audio_bell = false;
+        mouse_hide_wait = "-1.0";
+        window_padding_width = 4;
 
-    # Example: Enabling Starship for Bash
-    # Uncomment this if you use Bash
+        # Visuals
+        background_opacity = "0.95";
+        background_blur = 1;
 
-    bash = {
-      enable = true;
-    };
-
-
-    # Example: Enabling Starship for Zsh
-    # Uncomment this if you use Zsh
-    /*
-    zsh = {
-      enable = true;
-      enableStarship = true;
-    };
-    */
-
-    # Example: Enabling Starship for Fish
-    # Uncomment this if you use Fish
-    /*
-    fish = {
-      enable = true;
-      enableStarship = true;
-    };
-    */
-    home-manager = {
-      enable = true;
+        # Advanced Symbol Mapping (Nerd Fonts)
+        symbol_map = let
+          mappings = [
+            "U+23FB-U+23FE" "U+2B58" "U+E200-U+E2A9" "U+E0A0-U+E0A3"
+            "U+E0B0-U+E0BF" "U+E0C0-U+E0C8" "U+E0CC-U+E0CF" "U+E0D0-U+E0D2"
+            "U+E0D4" "U+E700-U+E7C5" "U+F000-U+F2E0" "U+2665" "U+26A1"
+            "U+F400-U+F4A8" "U+F67C" "U+E000-U+E00A" "U+F300-U+F313"
+            "U+E5FA-U+E62B"
+          ];
+        in
+          (builtins.concatStringsSep "," mappings) + " Symbols Nerd Font";
+      };
     };
   };
 }

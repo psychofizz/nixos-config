@@ -1,7 +1,6 @@
 {
   description = "Home Manager configuration for saikofisu";
 
-  # 1. Add the Binary Cache so you don't have to compile from source
   nixConfig = {
     extra-substituters = [ "https://wfetch.cachix.org" ];
     extra-trusted-public-keys = [ "wfetch.cachix.org-1:lFMD3l0uT/M4+WwqUXpmPAm2kvEH5xFGeIld1av0kus=" ];
@@ -14,31 +13,34 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Google's new vibeDE
     antigravity-nix = {
       url = "github:jacopone/antigravity-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # 2. Add wfetch input
     wfetch.url = "github:iynaix/wfetch";
+
+    # --- ADDED: Alacritty Theme Input ---
+    alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
   };
 
-  outputs = { nixpkgs, home-manager, ... }@inputs:
+  outputs = { nixpkgs, home-manager, alacritty-theme, ... }@inputs:
     let
       system = "x86_64-linux";
+
+      # --- MODIFIED: Import pkgs with the Overlay ---
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        # This makes pkgs.alacritty-theme available in home.nix
+        overlays = [ alacritty-theme.overlays.default ];
       };
     in {
       homeConfigurations."saikofisu" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
-        # This passes the 'inputs' variable to your home.nix
         extraSpecialArgs = { inherit inputs; };
 
-        # Point to your existing configuration file
         modules = [ ./home.nix ];
       };
     };
