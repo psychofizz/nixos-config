@@ -20,6 +20,7 @@
     obs-studio
     inkscape
     inputs.antigravity-nix.packages.${pkgs.system}.default
+    kdePackages.marknote
     inputs.wfetch.packages.${pkgs.system}.default
     libreoffice
     anki
