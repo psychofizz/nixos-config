@@ -46,6 +46,8 @@
 
     # --- CLI Fun ---
     spotify-player
+    spotifyd
+    spotify-qt
     cmatrix
     cowsay
     asciiquarium

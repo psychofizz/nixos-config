@@ -11,7 +11,7 @@ let
       owner = "irql-notlessorequal";
       repo = "intel-vaapi-driver";
       rev = "0b648be50cd80e16469c135c76ff61bbd2f2d12b"; 
-      sha256 = "0a0x7pgam7fkabry15kd2z6fdj6xgkqj3mjfdhr6q2m3il1h253v"; # Fill this after the first error
+      sha256 = "0a0x7pgam7fkabry15kd2z6fdj6xgkqj3mjfdhr6q2m3il1h253v"; 
     };
 
     nativeBuildInputs = with pkgs; [
