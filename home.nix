@@ -18,8 +18,9 @@
     kdePackages.plasma-browser-integration
     handbrake
     obs-studio
+    onlyoffice-desktopeditors
     inkscape
-    antigravity
+    antigravity-fhs
     kdePackages.marknote
     inputs.wfetch.packages.${pkgs.system}.default
     libreoffice
@@ -47,7 +48,7 @@
 
     # --- CLI Fun ---
     spotify-player
-    spotifyd
+    librespot
     spotify-qt
     cmatrix
     cowsay
@@ -55,6 +56,10 @@
     genact
     discordo
     youtube-tui
+    eza
+    bat
+    nh    
+    nix-output-monitor
   ];
 
   # ... (Keep your xdg.desktopEntries here if you have them) ...
@@ -109,6 +114,11 @@
         in
           (builtins.concatStringsSep "," mappings) + " Symbols Nerd Font";
       };
+    };
+
+    bash = {
+        enable = true;
+        enableCompletion = true;
     };
 
     starship = {
