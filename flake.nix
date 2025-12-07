@@ -14,12 +14,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Custom inputs used in your home.nix
-    antigravity-nix = {
-      url = "github:jacopone/antigravity-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     wfetch.url = "github:iynaix/wfetch";
     
     # Kept this from your previous request, though you seem to be using Kitty now
@@ -51,7 +45,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             
-            # This passes 'inputs' to home.nix so you can use antigravity/wfetch
+            # This passes 'inputs' to home.nix so you can use wfetch
             home-manager.extraSpecialArgs = { inherit inputs; };
 
             # This tells Home Manager to read your file

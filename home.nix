@@ -19,7 +19,7 @@
     handbrake
     obs-studio
     inkscape
-    inputs.antigravity-nix.packages.${pkgs.system}.default
+    antigravity
     kdePackages.marknote
     inputs.wfetch.packages.${pkgs.system}.default
     libreoffice
