@@ -40,6 +40,7 @@
     kdePackages.ktorrent
     moonlight-qt
     ungoogled-chromium
+    k3b
 
     # --- Productivity & Other ---
     spotify
