@@ -15,15 +15,11 @@
     };
 
     wfetch.url = "github:iynaix/wfetch";
-    
-    # Kept this from your previous request, though you seem to be using Kitty now
-    alacritty-theme.url = "github:alexghr/alacritty-theme.nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, alacritty-theme, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
-      overlays = [ alacritty-theme.overlays.default ];
     in {
       ### This is the entry point for 'nixos-rebuild switch'
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
@@ -36,10 +32,7 @@
           # 1. Your System Configuration (moved from /etc)
           ./configuration.nix
 
-          # 2. Overlays
-          { nixpkgs.overlays = overlays; }
-
-          # 3. Home Manager Module (Connects home.nix to the system)
+          # 2. Home Manager Module (Connects home.nix to the system)
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

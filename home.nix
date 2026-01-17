@@ -42,7 +42,6 @@
     ungoogled-chromium
 
     # --- Productivity & Other ---
-    anki
     spotify
     steam
 
@@ -119,13 +118,97 @@
     bash = {
         enable = true;
         enableCompletion = true;
+        
+        shellAliases = {
+          # NixOS operations
+          rebuild = "sudo nixos-rebuild switch --flake ~/.config/home-manager#nixos";
+          rebuild-test = "sudo nixos-rebuild test --flake ~/.config/home-manager#nixos";
+          rebuild-boot = "sudo nixos-rebuild boot --flake ~/.config/home-manager#nixos";
+          nix-update = "~/.config/home-manager/updater.sh";
+          nix-clean = "sudo nix-collect-garbage -d";
+          nix-search = "nix search nixpkgs";
+          
+          # Enhanced ls with eza
+          ls = "eza --icons --group-directories-first";
+          ll = "eza -l --icons --group-directories-first";
+          la = "eza -la --icons --group-directories-first";
+          lt = "eza --tree --icons --group-directories-first";
+          
+          # Better cat with bat
+          cat = "bat";
+          
+          # Git shortcuts
+          gs = "git status";
+          ga = "git add";
+          gc = "git commit";
+          gp = "git push";
+          gl = "git log --oneline --graph --decorate";
+          
+          # System utilities
+          df = "df -h";
+          du = "du -h";
+          free = "free -h";
+        };
     };
 
     starship = {
       enable = true;
       settings = {
         add_newline = true;
-        # ... other settings
+        
+        # Command timeout
+        command_timeout = 1000;
+        
+        # Format
+        format = "$username$hostname$directory$git_branch$git_status$nix_shell$package$cmd_duration$line_break$character";
+        
+        # Character
+        character = {
+          success_symbol = "[➜](bold green)";
+          error_symbol = "[➜](bold red)";
+        };
+        
+        # Directory
+        directory = {
+          truncation_length = 3;
+          truncate_to_repo = true;
+          style = "bold cyan";
+        };
+        
+        # Git
+        git_branch = {
+          symbol = " ";
+          style = "bold purple";
+        };
+        
+        git_status = {
+          ahead = "⇡\${count}";
+          behind = "⇣\${count}";
+          diverged = "⇕⇡\${ahead_count}⇣\${behind_count}";
+          conflicted = "🏳";
+          deleted = "✘";
+          renamed = "»";
+          modified = "!";
+          staged = "[++($count)](green)";
+          untracked = "[??($count)](red)";
+        };
+        
+        # Nix shell
+        nix_shell = {
+          symbol = " ";
+          format = "via [$symbol$state]($style) ";
+        };
+        
+        # Command duration
+        cmd_duration = {
+          min_time = 500;
+          format = "took [$duration](bold yellow) ";
+        };
+        
+        # Package version
+        package = {
+          disabled = false;
+        };
       };
     };
   };

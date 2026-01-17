@@ -1,0 +1,26 @@
+# Nix build outputs
+result
+result-*
+
+# Flake lock conflicts
+flake.lock.orig
+*.orig
+
+# Editor files
+.*.swp
+.*.swo
+*~
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+
+# Temporary files
+*.tmp
+.#*

@@ -6,7 +6,7 @@
   programs.virt-manager.enable = true;
 
   # Add your user to libvirtd group
-  users.groups.libvirtd.members = [ "your_username" ];
+  users.groups.libvirtd.members = [ "saikofisu" ];
 
   # Enable libvirtd service
   virtualisation.libvirtd.enable = true;

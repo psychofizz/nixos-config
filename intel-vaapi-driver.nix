@@ -52,7 +52,7 @@ in
   };
 
   # Ensure the driver is installed and available
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
       intel-vaapi-driver-custom
